@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discount calculator</title>
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-600 container mx-auto text-slate-200">
+    <header class="my-8">
+        <h1 class="text-4xl">WelCome <span class="font-bold text-teal-400">Discount calculator</span> app </h1>
+    </header>
+    <main class="grid grid-cols-2 gap-4">
+        <section class="space-y-2">
+            <h1>Original Price: <span id="show-price" class="underline underline-offset-2">_</span> </h1>
+            <h1>Your Discount Price: <span id="discount-price" class="underline underline-offset-2">_</span> </h1>
+            <div class="my-3">
+                <label for="price">Enter Price</label>
+                <input type="number" name="price" id="price" class="text-black p-1 px-2 block w-2/4"
+                    placeholder="Enter your number">
+            </div>
+            <div>
+                <label for="discount">Discount</label>
+                <input type="number" name="discount" id="discount" class="text-black p-1 px-2 block w-2/4"
+                    placeholder="discount %">
+            </div>
+            <button id="calc-btn" class="bg-teal-500 py-2 px-4 rounded-lg font-bold">Calculate</button>
+
+        </section>
+        </section>
+        <section class="space-y-2">
+            <h1>Original Price: <span class="underline underline-offset-2">1000</span> </h1>
+            <h1>Your Discount Price: <span id="discount-coupon" class="underline underline-offset-2">_</span> </h1>
+
+            <div>
+                <label for="coupon">Coupon Code</label>
+                <input type="text" name="coupon" id="coupon" class="text-black p-1 px-2 block w-2/4"
+                    placeholder="Coupon for 30%">
+            </div>
+            <button id="apply-btn" class="bg-red-500 py-2 px-4 rounded-lg font-bold">Apply</button>
+
+        </section>
+    </main>
+    <script>
+        const price = document.getElementById('price');
+        const discount = document.getElementById('discount');
+        const calcBtn = document.getElementById('calc-btn');
+        const applyBtn = document.getElementById('apply-btn');
+        const showPrice = document.getElementById('show-price');
+        const discountPrice = document.getElementById('discount-price');
+        const couponInput = document.getElementById('coupon');
+        const couponDiscPrice = document.getElementById('discount-coupon');
+
+        applyBtn.disabled = true;
+
+
+        function discountHandler() {
+            const priceValue = price.value;
+            const discountValue = discount.value;
+
+            if (priceValue < 0 || discountValue < 0 || priceValue === '' || discountValue === '') {
+                alert(`Please enter positive Number only`);
+                return;
+            }
+
+            const discounted = priceValue - (priceValue * (discountValue / 100)).toFixed(2);
+
+            showPrice.innerText = priceValue;
+            discountPrice.innerText = discounted;
+
+            price.value = '';
+            discount.value = '';
+        }
+        // Coupon
+
+        function couponInputHandler (e) {
+            if(e.target.value !== 'DISC30' || e.target.value === ''){
+                applyBtn.disabled = true;
+            }else {
+                applyBtn.disabled = false;
+            }
+            
+        }
+
+        function couponHandler() {
+            if (couponInput.value !== 'DISC30' || couponInput.value === '') {
+                alert(`Enter a valid coupon code`);
+            };
+            const couponDisc = 1000 - (1000 * (30 / 100));
+            couponDiscPrice.innerText = couponDisc;
+            couponInput.value = '';
+
+        }
+
+        calcBtn.addEventListener('click', discountHandler);
+        couponInput.addEventListener('keyup',couponInputHandler);
+        applyBtn.addEventListener('click', couponHandler);
+    </script>
+</body>
+
+</html>
